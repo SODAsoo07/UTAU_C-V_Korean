@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <OutputType>Library</OutputType>
+    <AssemblyName>KoreanCVPhonemizer</AssemblyName>
+    <RootNamespace>OpenUtau.Plugin.KoreanCV</RootNamespace>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="OpenUtau.Core">
+      <HintPath>C:\Users\oyh57\SODAsoo1\VocalSynth\OpenUtau\OpenUtau.Core.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="OpenUtau.Plugin.Builtin">
+      <HintPath>C:\Users\oyh57\SODAsoo1\VocalSynth\OpenUtau\OpenUtau.Plugin.Builtin.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
