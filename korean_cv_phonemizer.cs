@@ -119,8 +119,15 @@ namespace OpenUtau.Plugin.KoreanCV
         private List<Phoneme> ProcessSyllable(HangulSyllable syllable, int totalDuration)
         {
             var phonemes = new List<Phoneme>();
-            int consonantDuration = 30; // 자음 길이를 30틱으로 단축
-            int finalPosition = Math.Max(-30, totalDuration - 40); // 받침 위치 조정
+            
+            // 무성음 자음 기본 길이
+            int consonantDuration = 25; 
+            
+            // 유성 자음(n, r, m)일 경우 타이밍
+            if (syllable.Initial == "- n" || syllable.Initial == "- r" || syllable.Initial == "- m")
+            {
+                consonantDuration = 20;
+            }
 
             if (!string.IsNullOrEmpty(syllable.Initial) && syllable.Initial != "-")
             {
@@ -141,7 +148,22 @@ namespace OpenUtau.Plugin.KoreanCV
                 string finalPhoneme = finalConsonantsOnly.ContainsKey(syllable.Final[0]) 
                     ? finalConsonantsOnly[syllable.Final[0]] 
                     : syllable.Final;
+                
+                // 받침 기본 위치 설정
+                int finalDuration = 40;
+                
+                // M, L, NG의 경우 타이밍을 짧게 설정
+                if (finalPhoneme == "M" || finalPhoneme == "L" || finalPhoneme == "NG")
+                {
+                    finalDuration = 20; 
+                }
+                else if (finalPhoneme == "N")
+                {
+                    finalDuration = 13;
+                }
+
                 // 받침 위치를 노트 길이에 따라 동적으로 조정
+                int finalPosition = Math.Max(-30, totalDuration - finalDuration);
                 phonemes.Add(new Phoneme { phoneme = finalPhoneme, position = finalPosition });
             }
 
