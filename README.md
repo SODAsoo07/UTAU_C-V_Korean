@@ -14,7 +14,7 @@ https://drive.google.com/file/d/1ZKZZWLudUVSMg-Qvwu_qnh3TccS_iA89/view?usp=shari
 
 상기한 대로 코드는 대부분 AI로 제작하였습니다. 테스트 결과 포네마이저에서 별도의 보안 문제나 컴퓨터에 해를 입힐 문제는 발견되지 않았지만, 저는 코딩 초보이고 AI도 우타우 초보라... 상당히 얼렁뚱땅 작동되는 결과물이 탄생했습니다. 
 
-**포네마이저 사용법: 음원 파일 안에 동봉된 "KoreanC+VPhonemizer.dll" 파일을 오픈우타우의 플러그인 폴더에 넣어주세요. 그러면 포네마이저 선택 창에 [KO C+V] Korean C+V Phonemizer Beta 가 있을 텐데, 해당 항목을 선택하시면 원활한 사용이 가능합니다.
+**포네마이저 사용법: 음원 파일 안에 동봉된 "KoreanC+VPhonemizer.dll" 파일을 오픈우타우의 플러그인 폴더에 넣어주세요. 그러면 포네마이저 선택 창에 [KO C+V] Korean C+V Phonemizer 가 있을 텐데, 해당 항목을 선택하시면 원활한 사용이 가능합니다.
 
 ---
 해야 할 일
