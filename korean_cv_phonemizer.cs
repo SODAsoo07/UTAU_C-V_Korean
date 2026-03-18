@@ -5,9 +5,9 @@ using OpenUtau.Api;
 using OpenUtau.Core.Ustx;
 using OpenUtau.Plugin.Builtin;
 
-namespace OpenUtau.Plugin.KoreanCV
+namespace OpenUtau.Plugin.KoreanCplusV
 {
-    [Phonemizer("Korean C+V Phonemizer Beta", "KO C+V", language: "KO")]
+    [Phonemizer("Korean C+V Phonemizer", "KO C+V", "SODAsoo" language: "KO")]
     public class KoreanCVPhonemizer : BaseKoreanPhonemizer
     {
         private const int HangulSyllableStart = 0xAC00;
