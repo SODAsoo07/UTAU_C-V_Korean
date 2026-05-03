@@ -8,6 +8,7 @@
     <RootNamespace>OpenUtau.Plugin.KoreanCplusV</RootNamespace>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <Nullable>enable</Nullable>
   </PropertyGroup>
 
   <ItemGroup>
@@ -20,9 +21,4 @@
       <Private>false</Private>
     </Reference>
   </ItemGroup>
-
-  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
-    <Copy SourceFiles="$(TargetPath)" DestinationFolder="C:\Users\oyh57\SODAsoo1\VocalSynth\OpenUtau\Plugins\" />
-  </Target>
-
 </Project>
