@@ -158,6 +158,10 @@ namespace OpenUtau.Plugin.KoreanCplusV
 
         public override Result GenerateEndSound(Note[] notes, Note? prev, Note? next, Note? prevNeighbour, Note? nextNeighbour, Note[] prevNeighbours)
         {
+            if (notes.Length > 0 && string.Equals(notes[0].lyric?.Trim(), "R", StringComparison.OrdinalIgnoreCase))
+            {
+                return BuildReleaseResult(notes[0], prevNeighbour);
+            }
             return ConvertPhonemes(notes, prev, next, prevNeighbour, nextNeighbour, prevNeighbours);
         }
 
@@ -260,7 +264,9 @@ namespace OpenUtau.Plugin.KoreanCplusV
 
             if (!string.IsNullOrEmpty(syllable.Initial) && syllable.Initial != "-")
             {
-                phonemes.Add(new Phoneme { phoneme = syllable.Initial, position = syllableOffset });
+                int initialIndex = phonemeIndexOffset + phonemes.Count;
+                string initialAlias = PickInitialAlias(syllable.Initial, note, initialIndex);
+                phonemes.Add(new Phoneme { phoneme = initialAlias, position = syllableOffset });
                 if (!string.IsNullOrEmpty(syllable.Medial))
                 {
                     int vowelPosition = syllableOffset + Math.Min(consonantDuration, Math.Max(0, syllableDuration - 1));
@@ -293,10 +299,133 @@ namespace OpenUtau.Plugin.KoreanCplusV
 
                 // 받침 위치를 노트 길이에 따라 동적으로 조정
                 int finalPosition = syllableOffset + Math.Max(0, syllableDuration - finalDuration);
-                phonemes.Add(new Phoneme { phoneme = finalPhoneme, position = finalPosition });
+                int finalIndex = phonemeIndexOffset + phonemes.Count;
+                string finalAlias = PickFinalAlias(syllable.Medial, finalPhoneme, note, finalIndex);
+                phonemes.Add(new Phoneme { phoneme = finalAlias, position = finalPosition });
             }
 
             return phonemes;
+        }
+
+        private string PickInitialAlias(string initial, Note note, int phonemeIndex)
+        {
+            string[] candidates = initial == "- k"
+                ? new[] { "- k", "- g" }
+                : new[] { initial };
+            return TryPickMappedAlias(candidates, note, phonemeIndex, out var mappedAlias)
+                ? mappedAlias
+                : candidates[0];
+        }
+
+        private string PickFinalAlias(string medial, string finalPhoneme, Note note, int phonemeIndex)
+        {
+            var candidates = BuildFinalAliasCandidates(medial, finalPhoneme).ToArray();
+            if (TryPickMappedAlias(candidates, note, phonemeIndex, out var mappedAlias))
+            {
+                return mappedAlias;
+            }
+            return candidates[0];
+        }
+
+        private IEnumerable<string> BuildFinalAliasCandidates(string medial, string finalPhoneme)
+        {
+            string vowel = NormalizeVowelAlias(medial);
+            string fallbackVowel = GetFinalVowelFallback(vowel);
+            foreach (string candidateVowel in GetFinalVowelCandidates(fallbackVowel))
+            {
+                yield return $"{candidateVowel} {finalPhoneme}";
+            }
+
+            if (!string.IsNullOrEmpty(vowel)
+                && !string.Equals(vowel, fallbackVowel, StringComparison.Ordinal))
+            {
+                yield return $"{vowel} {finalPhoneme}";
+            }
+
+            yield return finalPhoneme;
+        }
+
+        private IEnumerable<string> GetFinalVowelCandidates(string vowel)
+        {
+            string[] candidates = vowel switch
+            {
+                "a" => new[] { "a", "eo" },
+                "eo" => new[] { "eo", "a" },
+                "o" => new[] { "o", "a", "eo" },
+                "u" => new[] { "u", "o", "a", "eo" },
+                "eu" => new[] { "eu", "eo", "u", "i", "a" },
+                "i" => new[] { "i", "e", "eo", "a" },
+                "e" => new[] { "e", "i", "eo", "a" },
+                _ => string.IsNullOrEmpty(vowel) ? Array.Empty<string>() : new[] { vowel },
+            };
+
+            foreach (string candidate in candidates.Distinct(StringComparer.Ordinal))
+            {
+                yield return candidate;
+            }
+        }
+
+        private string NormalizeVowelAlias(string medial)
+        {
+            return medial.StartsWith("- ", StringComparison.Ordinal) ? medial[2..] : medial;
+        }
+
+        private string GetFinalVowelFallback(string vowel)
+        {
+            return vowel switch
+            {
+                "ya" or "wa" => "a",
+                "yeo" or "wo" => "eo",
+                "yo" => "o",
+                "yu" => "u",
+                "yae" or "ye" or "we" => "e",
+                "wi" or "ui" => "i",
+                _ => vowel,
+            };
+        }
+
+        private Result BuildReleaseResult(Note note, Note? prevNeighbour)
+        {
+            const string fallbackAlias = "R";
+            if (prevNeighbour == null)
+            {
+                return new Result
+                {
+                    phonemes = new[]
+                    {
+                        new Phoneme { index = 0, phoneme = ResolveMappedAlias(fallbackAlias, note, 0), position = 0 },
+                    },
+                };
+            }
+
+            var previous = DecomposeHangul(prevNeighbour.Value.lyric ?? string.Empty);
+            if (previous.Count == 0)
+            {
+                return new Result
+                {
+                    phonemes = new[]
+                    {
+                        new Phoneme { index = 0, phoneme = ResolveMappedAlias(fallbackAlias, note, 0), position = 0 },
+                    },
+                };
+            }
+
+            string vowel = NormalizeVowelAlias(previous[^1].Medial);
+            string fallbackVowel = GetFinalVowelFallback(vowel);
+            var candidates = string.Equals(vowel, fallbackVowel, StringComparison.Ordinal)
+                ? new[] { $"{vowel} R", fallbackAlias }
+                : new[] { $"{fallbackVowel} R", $"{vowel} R", fallbackAlias };
+            string releaseAlias = TryPickMappedAlias(candidates, note, 0, out var mappedAlias)
+                ? mappedAlias
+                : candidates[0];
+
+            return new Result
+            {
+                phonemes = new[]
+                {
+                    new Phoneme { index = 0, phoneme = ResolveMappedAlias(releaseAlias, note, 0), position = 0 },
+                },
+            };
         }
 
         private void AddMedialPhonemes(
