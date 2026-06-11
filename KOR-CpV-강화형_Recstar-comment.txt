@@ -1,0 +1,22 @@
+kkeu-geu-tteu-deu-ppeu-beu 끄그 뜨드 쁘브 / ㄱ·ㄷ·ㅂ 계열 기본 자음 추출용
+jjeu-jeu-neu-neu-r-reu-m-meu 쯔즈 느느 ㄹ르 ㅁ므 / ㅉ·ㅈ·ㄴ·ㄹ·ㅁ 기본 자음 추출용
+ta-pa-ha-ka 타 파 하 카 / ㅌ,ㅍ,ㅎ,ㅋ 기본 자음 추출용
+sseu-sa-cheu 쓰 사 츠 / ㅆ,ㅅㅊ 기본 자음 추출용
+aKga-aTda-aPba-aNG 악가 앋다 압바 앙 / ㄱ·ㄷ·ㅂ·ㅇ 받침 및 받침-초성 연결
+eoK-eoN-euN 억 언 은 / 어·으 계열 ㄱ·ㄴ 받침
+iK-oK-uK-eK 익 옥 욱 엑 / 이·오·우·에 계열 ㄱ 받침
+eoT-oT-eT-euT 얻 옫 엗 읃 / 어·오·에·으 계열 ㄷ 받침
+iT-aT-uT 읻 앋 욷 / 이·아·우 계열 ㄷ 받침
+a-meuM-a-beuP 아믐 아븝 / 아 계열 ㅁ·ㅂ 대표 받침
+eo-meuM-eo-beuP 어믐 어븝 / 어 계열 ㅁ·ㅂ 대표 받침
+ra-aLra-reo-eoLreo-ri-iLri 라알라 러얼러 리일리 / 아·어·이 계열 ㄹ 연결 및 ㄹ 받침
+ro-oLro-ru-uLru 로올로 루울루 / 오·우 계열 ㄹ 연결 및 ㄹ 받침
+a-eo-o-u 아 어 오 우 / 단모음 롱톤
+eu-i-e 으 이 에 / 단모음 롱톤, 에는 애 통합
+wi-ui 위 의 / 이중모음성 모음
+ya-yeo-wi 야 여 위 / 단독 이중모음
+yo-yu 요 유 / 단독 이중모음
+ye-we 예 웨 / 단독 이중모음, 얘·왜 통합
+wa-wo 와 워 / 단독 이중모음
+aR-eoR-oR-uR 아(어미숨) 어(어미숨) 오(어미숨) 우(어미숨)
+euR-iR-eR 으(어미숨) 이(어미숨) 에(어미숨)
